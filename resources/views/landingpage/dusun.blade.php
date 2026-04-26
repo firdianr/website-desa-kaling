@@ -2,119 +2,120 @@
   <x-slot:title>{{ $title . " " . $dusun->name }}</x-slot:title>
   <x-slot:dusuns>{{ $dusuns }}</x-slot:dusuns>
 
-  <div class="container mx-auto px-4 py-2 bg-gray-200 rounded-lg">
+  <div class="container mx-auto px-4 py-8 bg-gray-50 rounded-xl shadow-sm border border-gray-100">
 
-    <div class="w-full text-center pt-6">
-      <h1 class="text-4xl font-semibold font-serif mb-4">Tentang Dusun {{ $dusun->name }}</h1>
+    <div class="w-full text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">Dusun {{ $dusun->name }}</h1>
+      <div class="h-1 w-24 bg-primary-600 mx-auto rounded-full"></div>
     </div>
 
-    <div class="flex flex-col items-center justify-start space-y-6 p-4 font-serif">
-      <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-32 items-start">
-        <!-- Div untuk gambar dan teks -->
-        <div class="flex flex-col items-center italic w-full md:w-auto">
-          <img class="w-full max-w-xs md:max-w-lg" 
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-16">
+      
+      <div class="flex flex-col group">
+        <div class="overflow-hidden rounded-2xl shadow-lg transition-all duration-300 group-hover:shadow-xl">
+          <img class="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105" 
           @if ($dusun->image)
-          src="{{ asset($dusun->image ) }}"
+            src="{{ asset($dusun->image ) }}"
           @else
-          src="{{ asset('img/lokasi/kaling.jpg') }}" 
+            src="{{ asset('img/lokasi/kaling.jpg') }}" 
           @endif
-          alt="Kaling">
-          Gambar : 
-          @if ($dusun->description)
-          {{ $dusun->description }}
-          @else
-          Gapura Dusun
-          @endif
+          alt="Foto Dusun {{ $dusun->name }}">
         </div>
-
-        <!-- Tabel informasi -->
-        <div class="bg-white shadow-md rounded-lg p-4 w-full md:w-auto">
-          <table class="w-full">
-            <thead>
-              <tr>
-                <th class="border-b-2 border-gray-300 py-2 px-4 text-left">Keterangan</th>
-                <th class="border-b-2 border-gray-300 py-2 px-4 text-left">Informasi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="border-b py-2 px-4">Kepala Dusun</td>
-                <td class="border-b py-2 px-4 hover:text-blue-600 hover:underline">{{ $dusun->kadus }}</td>
-              </tr>
-              <tr>
-                <td class="border-b py-2 px-4">Jumlah RW</td>
-                <td class="border-b py-2 px-4 hover:text-blue-600 hover:underline">{{ $dusun->rw }}</td>
-              </tr>
-              <tr>
-                <td class="border-b py-2 px-4">Jumlah RT</td>
-                <td class="border-b py-2 px-4 hover:text-blue-600 hover:underline">{{ $dusun->rt }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <p class="mt-4 text-center italic text-gray-500 text-sm font-serif">
+          &mdash; {{ $dusun->description ?? 'Gapura Dusun ' . $dusun->name }}
+        </p>
       </div>
-    </div>
 
-    <div style="all: unset; font-family: inherit; margin-top: 16px; font-size:large;  text-align: justify;">
-      {!! $dusun->latar_belakang !!}
-    </div>
-
-    <!-- Menampilkan posts yang terkait dengan dusun -->
-    <div class="mt-8">
-      <h2 class="text-2xl font-bold mb-4">Update di dusun {{ $dusun->name }}</h2>
-
-      <div class="py-4 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-0">
-          <!-- Container untuk grid posts -->
-          <div id="post-container" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-
-              @forelse ($posts->take(3) as $post)
-
-                  <article class="min-w-[300px] p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 overflow-hidden relative post-item">
-                      <div class="flex justify-between items-center mb-3 text-gray-500">
-                          <a href="/posts?category={{ $post->category->slug }}" class="hover:underline">
-                              <span class="{{ $post->category->color }} text-primary-800 text-sm font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800 hover:underline">
-                                  {{ $post->category->name }}
-                              </span>
-                          </a>
-                      </div>
-                      <a href="/posts/{{ $post->slug }}" class="hover:underline">
-                          <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $post->title }}</h2>
-                      </a>
-                      <span class="text-sm">{{ $post->updated_at->format('d/m/Y') }} | {{ $post->updated_at->diffForHumans() }}</span>
-                      @if ($post->image)
-                          <img class="w-full h-48 object-cover object-center mt-2" src="{{ asset('storage/' . $post->image) }}">
-                      @endif
-                      <p class="py-5 font-light text-gray-500 dark:text-gray-400">{{ Str::limit($post->body, 150) }}</p>
-                      <div class="flex justify-end items-center">
-                          <a href="/posts/{{ $post->slug }}" class="inline-flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline">
-                              Read more
-                              <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                              </svg>
-                          </a>
-                      </div>
-                  </article>
-
-                @empty
-
-                <div>
-                  <p class="font-semibold text-xl">Article not Found !</p>
-                </div>
-        
-                @endforelse
-
+      <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
+        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Informasi Kewilayahan
+        </h3>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border-b border-gray-50">
+            <span class="text-gray-600 font-medium">Kepala Dusun</span>
+            <span class="text-gray-900 font-bold bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-sm">{{ $dusun->kadus }}</span>
           </div>
-
-          @if ($posts->count() > 3)
-              <div class="text-center mt-6">
-                  <button id="load-more" class="bg-primary-600 text-white font-semibold py-2 px-4 rounded hover:bg-primary-700">
-                    &darr;  Tampilkan lebih banyak
-                  </button>
-              </div>
-          @endif
+          <div class="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border-b border-gray-50">
+            <span class="text-gray-600 font-medium">Jumlah RW</span>
+            <span class="text-gray-900 font-bold">{{ $dusun->rw }} Wilayah</span>
+          </div>
+          <div class="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+            <span class="text-gray-600 font-medium">Jumlah RT</span>
+            <span class="text-gray-900 font-bold">{{ $dusun->rt }} Wilayah</span>
+          </div>
+        </div>
+        
+        <div class="mt-8 p-4 bg-blue-50 rounded-xl text-sm text-blue-800 leading-relaxed">
+            Dusun {{ $dusun->name }} dikelola secara aktif untuk meningkatkan kesejahteraan masyarakat melalui koordinasi {{ $dusun->rt }} RT dan {{ $dusun->rw }} RW.
+        </div>
       </div>
     </div>
 
+    <div class="prose prose-lg max-w-none bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100 mb-16">
+      <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center lg:text-left">Sejarah & Latar Belakang</h2>
+      <div class="text-gray-700 leading-relaxed text-justify">
+        {!! $dusun->latar_belakang !!}
+      </div>
+    </div>
+
+    <div class="mt-12 border-t pt-12">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-8">
+          <div>
+              <h2 class="text-3xl font-extrabold text-gray-900">Update Terkini</h2>
+              <p class="text-gray-500">Berita dan kegiatan terbaru di {{ $dusun->name }}</p>
+          </div>
+          <a href="/posts" class="text-primary-600 font-semibold hover:underline mt-4 md:mt-0">Lihat semua berita &rarr;</a>
+      </div>
+
+      <div id="post-container" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          @forelse ($posts->take(3) as $post)
+              <article class="flex flex-col h-full bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden post-item">
+                  @if ($post->image)
+                      <img class="w-full h-52 object-cover" src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+                  @endif
+                  
+                  <div class="p-6 flex flex-col flex-grow">
+                      <div class="mb-3">
+                        <span class="{{ $post->category->color }} text-white text-xs font-bold px-2.5 py-1 rounded-md uppercase">
+                            {{ $post->category->name }}
+                        </span>
+                      </div>
+                      
+                      <a href="/posts/{{ $post->slug }}" class="hover:text-primary-600">
+                          <h2 class="mb-2 text-xl font-bold leading-tight text-gray-900">{{ $post->title }}</h2>
+                      </a>
+                      
+                      <p class="text-sm text-gray-400 mb-4">{{ $post->updated_at->format('d M Y') }}</p>
+                      
+                      <div class="text-gray-600 text-sm line-clamp-3 mb-6">
+                        {{ strip_tags(Str::limit($post->body, 150)) }}
+                      </div>
+
+                      <div class="mt-auto flex justify-end">
+                          <a href="/posts/{{ $post->slug }}" class="text-primary-600 font-bold text-sm inline-flex items-center hover:translate-x-1 transition-transform">
+                              Read more
+                              <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                          </a>
+                      </div>
+                  </div>
+              </article>
+          @empty
+              <div class="col-span-full text-center py-12 bg-white rounded-xl border-2 border-dashed">
+                <p class="text-gray-400 italic">Belum ada berita terbaru untuk dusun ini.</p>
+              </div>
+          @endforelse
+      </div>
+
+      @if ($posts->count() > 3)
+          <div class="text-center mt-12">
+              <button id="load-more" class="inline-flex items-center bg-white border-2 border-primary-600 text-primary-600 font-bold py-3 px-8 rounded-full hover:bg-primary-600 hover:text-white transition-all shadow-md">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7"></path></svg>
+                Tampilkan Lebih Banyak
+              </button>
+          </div>
+      @endif
+    </div>
   </div>
 
   <script>
@@ -125,45 +126,45 @@
         let currentIndex = 0;
         const postsPerLoad = 3;
 
-        loadMoreButton.addEventListener('click', function () {
-            let nextPosts = posts.slice(currentIndex, currentIndex + postsPerLoad);
-            nextPosts.forEach(post => {
-                let article = document.createElement('article');
-                article.classList.add('min-w-[300px]', 'p-6', 'bg-white', 'rounded-lg', 'border', 'border-gray-200', 'shadow-md', 'dark:bg-gray-800', 'dark:border-gray-700', 'overflow-hidden', 'relative', 'post-item');
-                
-                article.innerHTML = `
-                    <div class="flex justify-between items-center mb-3 text-gray-500">
-                        <a href="/posts?category=${post.category.slug}" class="hover:underline">
-                            <span class="${post.category.color} text-primary-800 text-sm font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800 hover:underline">
-                                ${post.category.name}
-                            </span>
-                        </a>
-                    </div>
-                    <a href="/posts/${post.slug}" class="hover:underline">
-                        <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${post.title}</h2>
-                    </a>
-                    <span class="text-sm">${new Date(post.updated_at).toLocaleDateString()} | ${new Date(post.updated_at).toLocaleTimeString()}</span>
-                    ${post.image ? `<img class="w-full h-48 object-cover object-center mt-2" src="{{ asset('storage/') }}/${post.image}">` : ''}
-                    <p class="py-5 font-light text-gray-500 dark:text-gray-400">${post.body.length > 150 ? post.body.substr(0, 150) + '...' : post.body}</p>
-                    <div class="flex justify-end items-center">
-                        <a href="/posts/${post.slug}" class="inline-flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline">
-                            Read more
-                            <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                            </svg>
-                        </a>
-                    </div>
-                `;
-                postContainer.appendChild(article);
+        if (loadMoreButton) {
+            loadMoreButton.addEventListener('click', function () {
+                let nextPosts = posts.slice(currentIndex, currentIndex + postsPerLoad);
+                nextPosts.forEach(post => {
+                    let article = document.createElement('article');
+                    article.className = 'flex flex-col h-full bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden';
+                    
+                    const postImage = post.image ? `<img class="w-full h-52 object-cover" src="{{ asset('') }}${post.image}">` : '';
+                    const postDate = new Date(post.updated_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+                    const postBody = post.body.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...';
+
+                    article.innerHTML = `
+                        ${postImage}
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="mb-3">
+                                <span class="${post.category.color} text-white text-xs font-bold px-2.5 py-1 rounded-md uppercase">
+                                    ${post.category.name}
+                                </span>
+                            </div>
+                            <a href="/posts/${post.slug}" class="hover:text-primary-600">
+                                <h2 class="mb-2 text-xl font-bold leading-tight text-gray-900">${post.title}</h2>
+                            </a>
+                            <p class="text-sm text-gray-400 mb-4">${postDate}</p>
+                            <div class="text-gray-600 text-sm line-clamp-3 mb-6">${postBody}</div>
+                            <div class="mt-auto flex justify-end">
+                                <a href="/posts/${post.slug}" class="text-primary-600 font-bold text-sm inline-flex items-center hover:translate-x-1 transition-transform">
+                                    Read more
+                                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    postContainer.appendChild(article);
+                });
+
+                currentIndex += postsPerLoad;
+                if (currentIndex >= posts.length) loadMoreButton.remove();
             });
-
-            currentIndex += postsPerLoad;
-
-            if (currentIndex >= posts.length) {
-                loadMoreButton.style.display = 'none';
-            }
-        });
+        }
     });
   </script>
-
 </x-layout>

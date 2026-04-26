@@ -84,7 +84,7 @@
 
       @forelse ($posts as $post)
 
-        <article class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 overflow-hidden relative">
+        <article class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 overflow-hidden relative flex flex-col h-full">
 
             <div class="flex justify-between items-center mb-3 text-gray-500">
               <a href="/dashboard/posts?category={{ $post->category->slug }}" class="hover:underline">
@@ -133,14 +133,14 @@
             <span class="text-sm">{{ $post->updated_at->format('d/m/Y') }} | {{ $post->updated_at->diffForHumans() }}</span>
 
             @if ($post->image)
-                <img class="w-full h-48 object-cover object-center mt-2" src="{{ asset($post->image ) }}">
+                <img class="w-full h-48 object-cover object-center mt-2 py-2" src="{{ asset($post->image ) }}">
             @endif
 
             <div style="all: unset; font-family: inherit;">
-              {!! Str::limit($post->body, 150) !!}
+              {!! Str::limit(strip_tags($post->body), 150) !!}
             </div>
 
-            <div class="flex justify-end items-center">
+            <div class="flex justify-end items-center mt-auto">
               <a href="/dashboard/posts/{{ $post->slug }}" class="inline-flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline">
                   Read more
                   <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>

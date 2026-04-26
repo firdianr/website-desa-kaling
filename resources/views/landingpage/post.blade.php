@@ -2,54 +2,60 @@
   <x-slot:title>{{ $title }}</x-slot:title>
   <x-slot:dusuns>{{ $dusuns }}</x-slot:dusuns>
 
-  {{-- <article class="py-8 max-w-screen-md border-b border-gray-300">
-    <h2 class="mb-1 text-3xl tracking-tight font-bold text-gray-900">{{ $post['title'] }}</h2>
-    <div >
-      By
-      <a href="/authors/{{ $post->author->username }}" class="text-base text-gray-500 hover:underline">{{ $post->author->name }}</a> 
-      in
-      <a href="/categories/{{ $post->category->slug }}" class="text-base text-gray-500 hover:underline">{{ $post->category->name }}</a>
-      | {{ $post->created_at->format('j F Y') }} | Updated {{ $post->updated_at->diffForHumans() }}
-    </div>
-    <p class="my-4 font-light">{{ $post['body'] }}</p>
-    <a href="/posts/" class="font-medium text-blue-500">&laquo; Back to posts</a>
-  </article> --}}
-
-  <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased rounded-lg">
+  <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased rounded-lg shadow-sm border border-gray-100">
     <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
       <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
-          <header class="mb-4 lg:mb-6 not-format">
-            <a href="{{ url()->previous() }}" class="font-medium text-medium text-blue-600 hover:underline">&laquo; Kembali</a>
-            <h1 class="mt-4 mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{ $post->title }}</h1>
-            <address class="flex items-center my-6 not-italic">
-              <div class="inline-flex items-start mr-3 text-sm text-gray-900 dark:text-white space-x-4">
-                <div>
-                  <h1 class="text-xl font-bold text-gray-900 dark:text-white">Penulis : {{ $post->writer }}</h1>
-                  <span class="text-sm">Updated {{ $post->updated_at->format('d/m/Y') }} | {{ $post->updated_at->diffForHumans() }}</span>
-                </div>
-                <a href="/posts?category={{ $post->category->slug }}">
-                  <span class="{{ $post->category->color }} text-primary-800 text-sm font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800 hover:underline">
-                    {{ $post->category->name }}
+          
+          <header class="mb-6 lg:mb-8 not-format">
+            <a href="{{ url()->previous() }}" class="inline-flex items-center font-medium text-blue-600 hover:underline mb-6">
+              <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+              Kembali
+            </a>
+
+            <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:text-5xl dark:text-white">
+              {{ $post->title }}
+            </h1>
+
+            <div class="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-gray-100 dark:border-gray-800 my-8">
+              <div class="flex items-center space-x-3">
+                <div class="flex flex-col">
+                  <span class="text-gray-900 dark:text-white font-bold text-lg">Penulis: {{ $post->writer }}</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">
+                    {{ $post->updated_at->format('d M Y') }} • {{ $post->updated_at->diffForHumans() }}
                   </span>
-                </a>
+                </div>
               </div>
-            </address>
+              
+              <a href="/posts?category={{ $post->category->slug }}">
+                <span class="{{ $post->category->color }} text-primary-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full hover:opacity-80 transition-opacity">
+                  {{ $post->category->name }}
+                </span>
+              </a>
+            </div>
           </header>
 
           @if ($post->image)
-          <div class="flex flex-col w-full items-center justify-center space-y-0">
-            <img class="w-1/2 mt-2" src="{{ asset($post->image ) }}">
-            <p class="italic font-center font-serif">Gambar : {{ $post->image_description }}</p>
-          </div>
+          <figure class="mb-10">
+            <div class="flex flex-col items-center">
+              <img class="w-full md:w-3/4 rounded-xl shadow-lg block object-cover" src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+              <figcaption class="mt-3 text-center italic font-serif text-sm text-gray-500 leading-none">
+                Gambar : {{ $post->image_description }}
+              </figcaption>
+            </div>
+          </figure>
           @endif
 
-          <div style="all: unset; font-family: inherit; text-align: justify;">
+          <div class="content-body text-gray-800 dark:text-gray-300 leading-relaxed text-lg" style="text-align: justify; text-justify: inter-word;">
             {!! $post->body !!}
-        </div>
+          </div>
 
-          <p class="text-md font-medium text-gray-600 dark:text-white italic">Editor : {{ $post->editor }}</p>
-        </article>
+          <div class="mt-12 pt-6 border-t border-gray-100 dark:border-gray-800">
+            <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 italic uppercase tracking-widest">
+              Editor: {{ $post->editor }}
+            </p>
+          </div>
+
+      </article>
     </div>
   </main>
-
 </x-layout>

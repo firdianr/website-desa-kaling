@@ -58,7 +58,7 @@
                         </h3>
                 
                         <div class="mt-6 space-y-2 font-medium text-gray-500 dark:text-gray-400 w-96">
-                            <p>{{ Str::limit($lembaga->description, 150) }}</p>
+                            <p>{{ Str::limit(strip_tags($lembaga->description), 150) }}</p>
                         </div>
                         {{-- <div style="all: unset; font-family: inherit; text-align: justify; font-size:large; width:24rem">
                             {!! Str::limit($lembaga->description, 150) !!}
